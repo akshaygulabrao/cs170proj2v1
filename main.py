@@ -21,4 +21,33 @@ def parse_test(fname):
     #normalize data
     x = (x - x.mean() / x.std())
     return x,y
-print(parse_test(f[0]))
+
+#create distance matrix
+def create_distance_matrix(x):
+    x = np.array(x)
+    dist = np.zeros((x.shape[0],x.shape[0]))
+    for i in range(dist.shape[0]):
+        for j in range(dist.shape[0]):
+            dist[i][j] = np.linalg.norm(x[i]- x[j])
+            if i == j:
+                dist[i][j] = np.Inf
+    return dist
+
+def validator(orig,y,cols):
+    x = orig.loc[:,cols]
+    if len(cols) == 0:
+        return len(np.unique(y) ) ** -1
+    #test the leave 1 out 
+    total = 0
+    correct = 0
+    dist = create_distance_matrix(x)
+    for i in range(y.shape[0]):
+        minDist = np.argmin(dist[i])
+        if y[minDist] == y[i]:
+            correct +=1
+        total+=1
+    return correct / total
+
+x,y = parse_test(f[1])
+dist = create_distance_matrix(x)
+r = validator(x,y,[1,15,27])
