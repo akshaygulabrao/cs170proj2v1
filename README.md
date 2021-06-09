@@ -7,3 +7,9 @@ Libraries Used:
 * numpy
 * pandas
 * time
+
+## Part 2 Compromise before i go for a drive
+
+class Classifier:
+	train(return distance matrix)
+	test(return np.armgin)
